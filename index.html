@@ -16,6 +16,25 @@
        height: 100%;
        width: 100%;
       }
+
+      .addRecordBtn {
+        position: absolute;
+        z-index: 10;
+        top: 10px;
+        right: 10px;
+        background-color: #0079c1;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      .addRecordBtn:hover {
+         background-color: #005a87;
+      }
      </style>
 
     <!--importing the css and libraries for esri.js-->
@@ -27,8 +46,10 @@
         require(["esri/config", 
           "esri/Map",
           "esri/views/MapView",
-          "esri/widgets/Locate" ],
-          (esriConfig, Map, MapView, Locate) => {
+          "esri/widgets/Locate",
+          "esri/widgets/Search",
+          "esri/layers/FeatureLayer" ],
+          (esriConfig, Map, MapView, Locate, Search, FeatureLayer) => {
 
           //adding API Key
           esriConfig.apiKey = "AAPTxy8BH1VEsoebNVZXo8HurM9-pAcf23W5yt8y2jTB2KTwD4hT3CaM8-Mvb-G6W0-FbKKJwDpQ0cTuz8ad9bk85eRHLaCQSOXeTWmVs6KrlSeTmUIV_CeSLZU9iFOgMOm1EZ1v4DRnSZrUX0m2TijzADbCnEfVjEKlR1VxKatOP7TtgtF9pOioiaaa_i8dWQaF1i44srbj6D8QHWP3BuFMF2T7FeUq-Zl0Jj1Vx_pn69Izppz5yf-tiFNC-kd59kQ0AT1_HEBEBKB6";
@@ -44,20 +65,44 @@
             zoom: 6
           });
 
+          //add locate button
           const locateBtn = new Locate({
             view: view
            });
 
-        // Add the locate widget to the top left corner of the view
-        view.ui.add(locateBtn, {
-          position: "top-left"
-        });
+          // Add the locate widget to the top left corner of the view
+          view.ui.add(locateBtn, {
+            position: "top-left"
+          });
+
+          //add search widget
+          const searchWidget = new Search({
+            view:view
+          });
+
+          //add search widget to top right corner
+          view.ui.add(searchWidget, {
+            position: "top-left"
+          });
+
+          //create feature layer from Survey123 layer
+          const layer = new FeatureLayer({
+            //URL to the service
+            url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/survey123_36595024e4924b3d8840615bdf8750f3_results/FeatureServer"
+          });
+
+          //add layer to map
+          map.add(layer);
+
+
           
         });
       </script>
 
   </head>
   <body>
+
+    <a href="https://survey123.arcgis.com/share/55a1dcb95cfe435a8b16cebfd83afef4"target="_blank" class="addRecordBtn">Add Record</a>
 
     <div id="viewDiv"></div>
 
